@@ -4,6 +4,6 @@ from . import views
 
 app_name= 'Uprofile'
 
-urlpattern = [
+urlpatterns = [
 		url(r'^$',views.index,name='entry')
 ]
