@@ -6,11 +6,12 @@
 	<meta name="author"  content="Ashish Garg" >
 	<meta name="mail_address" content="ashishg@mindfire@gmail.com">
 	<title>Uprofile: User profile</title>
-	<link rel="stylesheet" type="text/css" href="css/feel.css">
-	<script type="text/javascript"   src="js/script.js"></script>
+	{%  load static %}
+	<link rel="stylesheet" type="text/css" href="{% static  'Uprofile/feel.css' %}">
+	<script type="text/javascript"   src="{% static   'Uprofile/script.js' %}"></script>
 </head>
 <body>
-	{% block  head %} 
+	{% block  header %} 
 
 	{% endblock %}
 	{% block  content %} 

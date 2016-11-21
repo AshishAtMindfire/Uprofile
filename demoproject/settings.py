@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Uprofile'
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'demoproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['Uprofile/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -113,8 +114,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEBUG=True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATIC_URL = '/static/'
+
+
+#EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mindfiresolutions.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ashishg@mindfiresolutions.com'
+EMAIL_HOST_PASSWORD = 'onceuponatime'

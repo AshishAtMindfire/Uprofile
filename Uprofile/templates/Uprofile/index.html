@@ -1,28 +1,43 @@
 {%  extends "Uprofile/base_site.html" %}
 
 {% block content %}
+	
+	{%  if errors   %} 
+	<div> {{ errors }}  </div>
+	{%  endif  %}
+
 	<section>
-		<div  id="register">
-			<form action='/Uprofile/login/'  method='POST'>
+
+		<div  id="register"     style="margin:auto; color: blue; width:70%; border: 3px solid green; " >
+			<form action='/Uprofile/register/'  method='POST'  style="padding-left: 15px; ">
+				{% csrf_token %}
+				<!--   for custom rendering
 				<input type="text" name="fname">
 				<input type="text" name="lname">
 				<input type="text" name="name_user">
 				<input type="email" name="mailaddress">
 				<input type="password" name="key">
-				<input type="password" name="ckey">
-				<button type="button" onclick="">Register</button>
+				<input type="password" name="ckey">					
+				-->
+				{{ rform.as_p }}
+				<button type="Submit" onclick="">Register</button>	
 			</form>
 		</div>
-		<div id="login">
-			<form action="/Uprofile/register/">
+		<div id="login"   style="margin:auto; width:40%; display:block; ">
+			<form action="/Uprofile/login/"   method="POST">
+				{% csrf_token %}
+				<!--
 				<label>Username/Email</label>
 				<p><input type="text" name="name_user"></p>
 				<label>Password</label>
 				<p><input type="password" name="key"></p>
-				<button type="button" onclick="">Login</button>
+				-->
+				{{ lform.as_p }}
+				<button type="Submit" onclick="">Login</button>
+				<hr>
 				<span>*New User* </span><button type="button">Register Now</button>
 			</form>
-			<i  class='Forgot_pass' href="">Forgot Password</i>
+			<i  class='Forgot_pass' href="Uprofile/forgot_pass"   target='self'>  Forgot Password </i>
 		</div>
 	</section>
 {% endblock %}
