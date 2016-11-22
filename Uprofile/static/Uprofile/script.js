@@ -1,1 +1,1 @@
-alert('static files attached!!')
+//alert('static files attached!!')

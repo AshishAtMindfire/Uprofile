@@ -1,0 +1,15 @@
+{% extends 'Uprofile/base-site.html'  %}
+
+{% block content %}
+	{%  if errors %}
+		{{  errors }}
+	{%  else %}
+	<section>
+		<div  style="font-size:2em;">
+			Dear {{ username }},<br />
+			Your account has been registered successfully! To activate the account, visit the link we have sent on your mail {{ email }}.
+		</div>
+	</section>
+	{% endif  %}
+
+{% endblock %} 
