@@ -1,21 +1,115 @@
+#HeaderFirst {
+	width: 95% ;
+	padding:10px;
+	display:block;
+	background-color: lightgreen ;
+	border : 3px solid black;
 
+}
 
 #headerSiteName
 
 {
-	display:block;
-	font-size:9em;
-	float:left; 
+	display:inline-block;
+	font-size:3em; 
 	margin-left:30px; 
 	color:blue;
 
 }
 
+#HeaderFirst > div > a {
+	margin:10px 15px 10px 0px;	
+	padding:5px 15px;
+	background-color: darkgreen;
+	font-size:2em ;
+	color:white;
+	text-decoration: none;
+	display: inline-block;
+	float:right;
+	border-radius:10px;
+}
 
-#register
-{
-
+#errorblock
+{	
+	width:40%;
+	height:40%;
+	padding: 40px;
 	display: block;
+	margin:auto;
+	margin-top:30px;	
+	font-size:1.5em;
+	background-color: rgb(100,100,100);
+	border-radius: 10px;
+}
+
+#loginform{
+	border: 1px solid rgb(60,30,20);
+	padding:40px;
+	margin:auto;
+	margin-top: 30px; 
+	width:40%; 
+	display:block;
+	border-radius:10px;
+}
+
+#loginform a
+{
+	display: block;
+	background-color: aqua;
+	line-height: 2.5em;
+	width:95%;
+	text-align: center;
+	margin:6px;
+	text-decoration:none;
+	color:black;
+
 }
 
 
+#registerform 
+{
+	border: 1px solid black;
+	padding:40px;
+	margin:auto; 
+	margin-top:30px;
+	width:40%; 
+	display:block;
+	border-radius:10px;
+
+}
+
+
+#passwordresetform
+{
+	border: 1px solid black;
+	padding:40px;
+	margin:auto; 
+	margin-top:30px;
+	width:40%; 
+	display:block;
+	border-radius:20px;
+}
+
+#form
+{
+	border: 1px solid black;
+	padding:40px;
+	margin:auto; 
+	margin-top:30px;
+	width:40%; 
+	display:block;
+	border-radius:10px;
+}
+
+label
+{
+	font-size: 1.2em;
+
+}
+
+
+footer{
+	position:fixed;
+	bottom:0px;
+	right:20px;
+}

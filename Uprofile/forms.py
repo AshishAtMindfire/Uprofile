@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 
 class LoginForm(forms.Form):
     username = forms.CharField(required=True,label='Username',min_length=8,max_length=25)
-    password = forms.CharField(widget=forms.PasswordInput,label='Password',required=True,min_length=8,max_length=20)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'maxlength':'25','minlength':'8'}),label='Password',required=True,min_length=8,max_length=25)
 
 
 class RegisterForm(forms.Form):
@@ -41,9 +41,9 @@ class RegisterForm(forms.Form):
     #Sending activation email ------>>>!! Warning : Domain name is hardcoded below !!<<<------
     #The email is written in a text file (it contains templatetags which are populated by the method below)
     def sendEmail(self,data):
-        link = "http:127.0.0.1/Uprofile/activate/" + data ['activation_key']
+        link = "http:127.0.0.1:8000/Uprofile/activate/" + data ['activation_key']
         subject = "Uprofile : Activate your account"
-        message = "Use the below link to activate your account on Uprofile \n %s" % (link)
+        message = "Dear User, \n Use the below link to activate your account on Uprofile\n\n %s  \n\n Regards\n Uprofile team." % (link)
         #print unicode(message).encode('utf8')
         print('sending mail')
         send_mail(subject, message, 'ashishgarg635@gmail.com', [data['email']], fail_silently=False)
@@ -51,7 +51,28 @@ class RegisterForm(forms.Form):
 
 
 class PasswordResetForm(forms.Form):
-    mail = forms.EmailField()
+    mail = forms.EmailField(label="Email address",widget=forms.EmailInput)
+
+    def sendEmail(self,data):
+        link = "http:127.0.0.1:8000/Uprofile/forgot/" + data ['key']
+        subject = "Uprofile : Password reset request "
+        message = "Dear User, \n Use the below link to reset your account's password on Uprofile\n\n   %s   \n\n Regards\n Uprofile team." % (link)
+        #print unicode(message).encode('utf8')
+        print('sending mail')
+        send_mail(subject, message, 'ashishgarg635@gmail.com', [data['email']], fail_silently=False)
+
+
+class ResetForm(forms.Form):
+
+    new_password = forms.CharField(min_length=8,max_length=50,label="New Password",widget = forms.PasswordInput(attrs={}))
+    confirm_password  = forms.CharField(min_length=8,max_length=50,label="Confirm Password",widget = forms.PasswordInput(attrs={}))
+
+    def clean(self):
+        password1 = self.cleaned_data.get('new_password')
+        password2 = self.cleaned_data.get('confirm_password')
+        if password1 and password1 != password2:
+            raise ValidationError(_("New Passwords dont match."))
+        return self.cleaned_data
 
 
 class ChangePasswordForm(forms.Form):
@@ -60,8 +81,11 @@ class ChangePasswordForm(forms.Form):
     confirm_password  = forms.CharField(min_length=8,max_length=50,label="Confirm Password",widget = forms.PasswordInput(attrs={}))
 
     def clean(self):
-        password1 = self.cleaned_data.get('old_password')
-        password2 = self.cleaned_data.get('new_password')
+        password1 = self.cleaned_data.get('new_password')
+        password2 = self.cleaned_data.get('confirm_password')
         if password1 and password1 != password2:
             raise ValidationError(_("New Passwords dont match."))
         return self.cleaned_data
+
+
+

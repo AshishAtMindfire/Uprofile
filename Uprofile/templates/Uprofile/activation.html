@@ -1,0 +1,17 @@
+{%  extends "Uprofile/base_site.html" %}
+
+{% block content %}
+	
+	<section>
+		<div>
+		{% if activation_expired %}
+		 	This link is expired. 
+		{% elif  already_active %}
+			This account is already active. 
+		{% else %}
+			The account have been successfully activated. 
+			<a href="/Uprofile/login"> Login Now </a>
+		{% endif %}
+		</div>
+	</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{%  extends "Uprofile/base_site.html" %}
+
+{% block content %}
+	
+	<section>
+		
+		<div id="form">
+		
+			{%  if errors   %} 
+				<div  id="errorblock" > {{ errors }}  </div>
+			{%  endif  %}
+			
+
+			<form method="post">
+				{% csrf_token %}
+				{{  form.as_p }}
+				<button type="Submit"> Reset </button>
+			</form>			
+		</div>
+	</section>
+{% endblock %}

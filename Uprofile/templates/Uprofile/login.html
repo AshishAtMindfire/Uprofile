@@ -1,0 +1,27 @@
+{%  extends "Uprofile/base_site.html" %}
+{% comment  %}
+	The template for login page in the application. 
+{% endcomment%}  
+
+{% block content %}
+	<section>
+
+		{%  if errors   %} 
+			<div  id="errorblock" > {{ errors }}  </div>
+
+		{%  endif  %}
+
+		<div id="loginform">
+			<form action="/Uprofile/login/"   method="POST">
+				{% csrf_token %}
+				<center>
+					{{ form.as_p }}
+					<button type="Submit" onclick="">Login</button>
+				</center>			
+			</form>
+			<hr>
+			<a  href="../register" target="_self"> Register Now </a>
+			<a  href="../forgot"   target='_self'> Forgot Password </a>
+		</div>
+	</section>
+{% endblock%}

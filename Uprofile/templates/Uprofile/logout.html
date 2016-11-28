@@ -1,0 +1,11 @@
+{% extends "Uprofile/base_site.html" %}
+
+{% block content %}
+	<div>
+		{% if name %}
+			Your have been successfully logged out !
+		{% else %}
+			Your are not allowed to perform this action.
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,15 +1,30 @@
 {% extends   "Uprofile/base.html"  %}
 		
 {%  block  header %}
-	<!--
-	<header id="hheader">
+
+	<header id="HeaderFirst">
 		<div>
 			<span id="headerSiteName" > Uprofile </span>
+		
+			{%   if username %}
+
+			<a href="/Uprofile/show/{{ username }}"> Register </a>
+
+			{% else %}
+				<a href="/Uprofile/login"> Login </a>
+				<a href="/Uprofile/register"> Register </a>
+			{% endif %}
+
 		</div>
 	</header>
-	-->
+
 {% endblock %}
 
 {% block footer %}
-
+	<footer  style="">
+		<div>
+			<i>All copyrights are reserved by Uprofile.</i><br/>
+			Creator : Ashish Garg
+		</div>
+	</footer>
 {% endblock %}
