@@ -16,11 +16,15 @@ def index(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('Uprofile:show'))
     else:
-        context = {}
+        context = {'username':request.user.username}
         return render(request,'Uprofile/index.html',context)
 
 
 def register(request):
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('Uprofile:show'))
+
     register_details = RegisterForm()
     if request.method ==  "POST":
         register_details = RegisterForm(request.POST)
@@ -54,6 +58,7 @@ def register(request):
     return render(request,'Uprofile/register.html',context)
 
 def activation(request, key):
+
     activation_expired = False
     already_active = False
     profile = get_object_or_404(Profile, activation_key=key)
@@ -70,7 +75,11 @@ def activation(request, key):
     return render(request, 'Uprofile/activation.html', locals())
 
 
-def login(request):
+def uprofile_login(request):
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('Uprofile:show'))
+
     context = {}
     errors = None
     if request.method == 'POST':
@@ -108,7 +117,7 @@ def login(request):
 
 def show(request):
     if request.user.is_authenticated():
-        context = {}
+        context = {'username':request.user.username}
         return render(request,"Uprofile/show.html",context)
     else:
         return render(request,"Uprofile/not_allowed.html",{})
@@ -157,7 +166,7 @@ def resetpassword(request,key):
 
 
 def changepassword(request):
-    context = {'form' : ChangePasswordForm() }
+    context = {'form' : ChangePasswordForm() , 'username' : request.user.username }
     if request.user.is_authenticated():
         if request.method == 'POST':
             form = ChangePasswordForm(request.POST)
@@ -168,7 +177,10 @@ def changepassword(request):
                 if request.user.check_password(old_password):
                     request.user.set_password(new_password)
                     request.user.save()
-                    render(request,"Uprofile/change_successful",{})
+                    print("password changed!")
+                    return render(request,"Uprofile/change_successful.html",{})
+                else:
+                    context['errors'] = " Wrong Password !! "
             else:
                 context['errors'] = "Form Validation failed ! "
     else:
@@ -176,15 +188,15 @@ def changepassword(request):
     return render(request,"Uprofile/changePassword.html",context)
 
 # Logout View
-def logout(request):
-    name = None
-    context = { 'name': name }
+def uprofile_logout(request):
+    
     if request.user.is_authenticated():
         name = request.user.get_full_name()
-        logout(request.user)
+        context = { 'name': name }
+        logout(request)
         return render(request,'Uprofile/logout.html',context)
     else:
-        return render(request,"Uprofile/logout.html",context)
+        return render(request,"Uprofile/logout.html",{})
 
 
 

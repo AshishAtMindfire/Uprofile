@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 
 class LoginForm(forms.Form):
     username = forms.CharField(required=True,label='Username',min_length=8,max_length=25)
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'maxlength':'25','minlength':'8'}),label='Password',required=True,min_length=8,max_length=25)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'maxlength':'25','minlength':'3'}),label='Password',required=True,min_length=3,max_length=25)
 
 
 class RegisterForm(forms.Form):
@@ -51,7 +51,7 @@ class RegisterForm(forms.Form):
 
 
 class PasswordResetForm(forms.Form):
-    mail = forms.EmailField(label="Email address",widget=forms.EmailInput)
+    mail = forms.EmailField(label="",widget=forms.EmailInput)
 
     def sendEmail(self,data):
         link = "http:127.0.0.1:8000/Uprofile/forgot/" + data ['key']

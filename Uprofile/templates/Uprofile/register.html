@@ -15,7 +15,7 @@
                 </div>
             {%  endif %}
 
-            <div  id="registerform" >
+            <div  id="form" >
                 <form action="{%url 'Uprofile:register' %}"  method='POST'  style="padding-left: 15px; ">
                     {% csrf_token %}
                     {{ form.as_p }}

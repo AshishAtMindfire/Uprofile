@@ -12,9 +12,9 @@
 				<div id="errorblock">{{ form.errors }}</div>
 			{% endif %}
 			
-			<div  id="passwordresetform">
+			<div  id="form">
 				<form action="/Uprofile/forgot/"   method='post' >
-					<p>Enter the email address you are registered with </p>
+					<p  style="font-size:1.5em; ">Enter the email address you are registered with</p>
 					{%  csrf_token %}
 					{{  form.as_p  }}
 					<button   type="Submit" >Submit</button>

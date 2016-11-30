@@ -7,6 +7,16 @@
 
 }
 
+#message{
+	text-align: center;
+	width:40%;
+	margin:auto;
+	margin-top: 30px;
+	padding :20px;
+	border: 2px solid black;
+	border-radius:10px;
+}
+
 #headerSiteName
 
 {
@@ -31,6 +41,7 @@
 
 #errorblock
 {	
+	text-align: center;
 	width:40%;
 	height:40%;
 	padding: 40px;
@@ -39,8 +50,24 @@
 	margin-top:30px;	
 	font-size:1.5em;
 	background-color: rgb(100,100,100);
+	color:red;
+	border:2px solid red;
 	border-radius: 10px;
 }
+
+
+#form
+{
+	border: 1px solid black;
+	padding:40px;
+	margin:auto; 
+	margin-top:30px;
+	width:40%; 
+	display:block;
+	border-radius:10px;
+	text-align: center;
+}
+
 
 #loginform{
 	border: 1px solid rgb(60,30,20);
@@ -52,7 +79,7 @@
 	border-radius:10px;
 }
 
-#loginform a
+#form a
 {
 	display: block;
 	background-color: aqua;
@@ -90,16 +117,7 @@
 	border-radius:20px;
 }
 
-#form
-{
-	border: 1px solid black;
-	padding:40px;
-	margin:auto; 
-	margin-top:30px;
-	width:40%; 
-	display:block;
-	border-radius:10px;
-}
+
 
 label
 {
@@ -112,4 +130,19 @@ footer{
 	position:fixed;
 	bottom:0px;
 	right:20px;
+}
+
+button
+{
+	display: block;
+	background-color: rgb(135, 135, 160);
+	line-height: 2.5em;
+	width:95%;
+	text-align: center;
+	margin:6px;
+	text-decoration:none;
+	font-weight: bold;
+	font-size: 1em;
+	color:black;
+
 }
