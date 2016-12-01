@@ -1,65 +1,27 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from Uprofile.forms import LoginForm, RegisterForm, PasswordResetForm, ChangePasswordForm
+from Uprofile.forms import LoginForm, RegisterForm, PasswordResetForm, ResetForm, ChangePasswordForm
 from django.core.mail import send_mail
 from django.urls import reverse
+from django.utils import timezone
 import hashlib
-from .models import Profile
+from .models import Profile, ForgotPass 
 import datetime
 
 
 # Create your views here.
-def index(request,errorcode=None):
-    errors = None
+def index(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('Uprofile:show'))
     else:
-        if str(errorcode) == '1':
-            errors = "This account is currently disabled. Contact the site administrator."
-        elif str(errorcode) == '2':
-            errors = "Login failed. Invalid details"
-        elif str(errorcode) == '3':
-            errors = "Validation failed. Something nasty is going on. Mail send to administrator."
-        elif str(errorcode) == '4':
-            errors = "Mischivous Usage..."
-
-        context = {'lform':LoginForm(),"rform": RegisterForm(),'errors':errors}
+        context = {}
         return render(request,'Uprofile/index.html',context)
 
 
-
-def login(request):
-    if request.method == 'POST':
-        login_details = LoginForm(request.POST)
-        if login_details.is_valid():
-            #if request.POST.get('name_user') and request.POST.get('pass_key'):
-            #   if request.POST['name_user'].strip() != '' and request.POST['pass_key'].strip() != '':
-            #       pass # check for user login credentials
-            details = login_details.cleaned_data
-            username = details.get('username')
-            password = details.get('password')
-            current_user = authenticate(username=username,password=password)
-            if current_user is not None:
-                if current.is_active:
-                    login(request,current_user)
-                    return HttpResponseRedirect(reverse('Uprofile:show'))
-                else:
-                    #the user is disabled
-                    errors = "This account is not activated. Please activate it first."
-            else:
-                errors = "Login failed. Invalid details"
-                
-        else:
-            errors = "Validation failed. Something nasty is going on. Mail send to administrator."
-    else: 
-        errors = "Mischivous Usage..."
-    return redirect('/Uprofile/index') 
-        
-
 def register(request):
-    print("Method : %s" % (request.method))
+    register_details = RegisterForm()
     if request.method ==  "POST":
         register_details = RegisterForm(request.POST)
         if register_details.is_valid():
@@ -73,7 +35,7 @@ def register(request):
             details['key_expires'] = datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(days=2), "%Y-%m-%d %H:%M:%S")
             print("sending mail")
             register_details.sendEmail(details)
-            user = User.objects.create_user(username,user_email,password)
+            user = User.objects.create_user(username=username,email=user_email,password = password)
             user.first_name = first_name
             user.last_name = last_name
             user.is_active = False
@@ -86,47 +48,10 @@ def register(request):
             profile.activation_key =  details['activation_key']
             profile.key_expires =  details['key_expires']
             profile.save()
-            return render(request,"Uprofile/register.html",{'username':details['username'],'email':details['email'],'errors':None})
-        else:
-            errors = "some error!"
-            return render(request,"Uprofile/register",{'errors':errors,'form':register_details})
-    return HttpResponseRedirect(reverse('Uprofile:index'))
-
-
-
-
-
-def show(request,username):
-    return HttpResponse('this is a test view')
-    if request.user.is_authenticated():
-        
-        return render(request,"Uprofile/show.html",context)
-    else:
-        return render(request,"Uprofile/not_allowed.html",{})
-
-
-
-# View for forgot password
-def forgot_pass(request):
-    context = {'form': PasswordResetForm() }
-    return render(request,'Uprofile/forgot.html',context)
-
-
-
-def changepassword(request):
-     context = {'form' : ChangeResetForm() }
-     return render(request,"Uprofile:Changepassword",context)
-
-# Logout View
-def logout(request):
-    name = None
-    context = { 'name': name }
-    if request.user.is_authenticated():
-        name = request.user.get_full_name()
-        logout(request.user)
-        return render(request,'Uprofile/logout.html',context)
-    else:
-        return render(request,"Uprofile/logout.html",context)
+            return render(request,"Uprofile/register.html",{'username':details['username'],'email':details['email']})
+    
+    context = { 'form' : register_details }
+    return render(request,'Uprofile/register.html',context)
 
 def activation(request, key):
     activation_expired = False
@@ -140,11 +65,132 @@ def activation(request, key):
             profile.user.is_active = True
             profile.user.save()
 
-    #If user is already active, simply display error message
     else:
-        already_active = True #Display : error message
-    return render(request, 'siteApp/activation.html', locals())
+        already_active = True
+    return render(request, 'Uprofile/activation.html', locals())
 
+
+def login(request):
+    context = {}
+    errors = None
+    if request.method == 'POST':
+        login_details = LoginForm(request.POST)
+        if login_details.is_valid():
+            #if request.POST.get('name_user') and request.POST.get('pass_key'):
+            #   if request.POST['name_user'].strip() != '' and request.POST['pass_key'].strip() != '':
+            #       pass # check for user login credentials
+            details = login_details.cleaned_data
+            username = details.get('username')
+            password = details.get('password')
+            print(username,password)
+            current_user = authenticate(username=username,password=password)
+            print ('authentication done : ',current_user)
+            if current_user is not None:
+                if current_user.is_active:
+                    login(request,current_user)
+                    return HttpResponseRedirect(reverse('Uprofile:show'))
+                else:
+                    #the user is disabled
+                    errors = "This account is not activated. Please activate it first."
+            else:
+                errors = "Login failed. Invalid details"
+                
+        else:
+            errors = "Validation failed. Something nasty is going on. Mail send to administrator."
+    
+    context['form'] = LoginForm()
+    context['errors'] = errors
+    return render(request,"Uprofile/login.html",context) 
+        
+
+
+
+
+def show(request):
+    if request.user.is_authenticated():
+        context = {}
+        return render(request,"Uprofile/show.html",context)
+    else:
+        return render(request,"Uprofile/not_allowed.html",{})
+
+
+
+# View for forgot password
+def forgot(request):
+    request_accepted = False
+    not_registered = False
+    form = PasswordResetForm() 
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            if len(User.objects.filter(email=form.cleaned_data['mail'])):
+                user = User.objects.filter(email=form.cleaned_data['mail'])[0]
+                code = user.username + str( datetime.datetime.now().timestamp )
+                key = hashlib.md5(code.encode()).hexdigest()
+                data = { 'key' : key , 'email': form.cleaned_data['mail']}
+                form.sendEmail(data)
+                x = ForgotPass()
+                x.user = user
+                x.key = data['key']
+                x.save()
+                request_accepted = True
+            else:
+                not_registered = True   #"The given email address is not registered." 
+
+    return render(request,'Uprofile/forgot.html',locals())
+
+
+def resetpassword(request,key):
+    ForgotPassObj = ForgotPass.objects.get(key = key)
+    context = {}
+    if request.method == "POST":
+        form = ResetForm(request.POST)
+        if form.is_valid():
+            ForgotPassObj.user.set_password(form.cleaned_data['new_password'])
+            ForgotPassObj.user.save()
+            return render(request,"Uprofile/resetsuccess.html",{})
+        else:
+            context['errors'] = " Form Validation failed !"
+
+    context['form'] = ResetForm()
+    return render(request,'Uprofile/reset.html',context)
+
+
+def changepassword(request):
+    context = {'form' : ChangePasswordForm() }
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            form = ChangePasswordForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                old_password = data['old_password']
+                new_password = data['new_password']
+                if request.user.check_password(old_password):
+                    request.user.set_password(new_password)
+                    request.user.save()
+                    render(request,"Uprofile/change_successful",{})
+            else:
+                context['errors'] = "Form Validation failed ! "
+    else:
+        context['errors'] = "Your are not allowed to perform this action."
+    return render(request,"Uprofile/changePassword.html",context)
+
+# Logout View
+def logout(request):
+    name = None
+    context = { 'name': name }
+    if request.user.is_authenticated():
+        name = request.user.get_full_name()
+        logout(request.user)
+        return render(request,'Uprofile/logout.html',context)
+    else:
+        return render(request,"Uprofile/logout.html",context)
+
+
+
+
+
+'''
 def new_activation_link(request, user_id):
     form = RegistrationForm()
     datas={}
@@ -170,6 +216,6 @@ def new_activation_link(request, user_id):
         request.session['new_link']=True #Display: new link sent
 
     return redirect(home)
-
+'''
 def testing(request,errors):
     return HttpResponse('this is a test view')

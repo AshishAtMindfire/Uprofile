@@ -46,7 +46,7 @@ class RegisterForm(forms.Form):
         message = "Dear User, \n Use the below link to activate your account on Uprofile\n\n %s  \n\n Regards\n Uprofile team." % (link)
         #print unicode(message).encode('utf8')
         print('sending mail')
-        send_mail(subject, message, 'ashishgarg635@gmail.com', [data['email']], fail_silently=False)
+        send_mail(subject, message, 'urofileteam@gmail.com', [data['email']], fail_silently=False)
 
 
 
@@ -59,7 +59,7 @@ class PasswordResetForm(forms.Form):
         message = "Dear User, \n Use the below link to reset your account's password on Uprofile\n\n   %s   \n\n Regards\n Uprofile team." % (link)
         #print unicode(message).encode('utf8')
         print('sending mail')
-        send_mail(subject, message, 'ashishgarg635@gmail.com', [data['email']], fail_silently=False)
+        send_mail(subject, message, 'urofileteam@gmail.com', [data['email']], fail_silently=False)
 
 
 class ResetForm(forms.Form):
