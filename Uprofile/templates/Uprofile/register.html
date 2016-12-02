@@ -3,15 +3,15 @@
 {% block content %}
     
     <section>
-        {%  if username %}
-            <div  style="font-size:2em;">
-                Dear {{ username }},<br />
+        {%  if name %}
+            <div  id="message">
+                Dear {{ name }},<br />
                 Your account has been registered successfully! To activate the account, visit the link we have sent on your mail {{ email }}.
             </div>
         {% else  %}
-            {%  if form.errors %}
+            {%  if errors %}
                 <div id="errorblock">
-                    {{ form.errors }}
+                    {{ errors }}
                 </div>
             {%  endif %}
 

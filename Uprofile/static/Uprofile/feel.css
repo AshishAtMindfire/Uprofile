@@ -93,6 +93,18 @@
 }
 
 
+#message a
+{
+	display: block;
+	background-color: aqua;
+	line-height: 2.5em;
+	width:95%;
+	text-align: center;
+	margin:6px;
+	text-decoration:none;
+	color:black;
+}
+
 #registerform 
 {
 	border: 1px solid black;

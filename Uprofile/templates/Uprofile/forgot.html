@@ -2,9 +2,8 @@
 
 {% 	block content	%}
 <section>
-	<div>
 		{% if request_accepted %}
-			Your request have been accepted. Check your email and visit the link provided in it to reset password.
+			<div id="message" > Your request have been accepted. Check your email and visit the link provided in it to reset password. </div>
 		{% else %}
 			{% if not_registered %}
 				<div id="errorblock">The given email address is not registered. </div>
@@ -21,7 +20,6 @@
 				</form>
 			</div>
 		{%  endif %}
-	</div>
 </section>
 
 {% endblock  %}

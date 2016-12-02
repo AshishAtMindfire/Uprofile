@@ -3,15 +3,20 @@
 {% block content %}
 	
 	<section>
-		<div>
-		{% if activation_expired %}
-		 	This link is expired. 
-		{% elif  already_active %}
-			This account is already active. 
+		{% if Invalid_url %}
+			<div id="message"> Invalid Url </div>
 		{% else %}
-			The account have been successfully activated. 
-			<a href="/Uprofile/login"> Login Now </a>
-		{% endif %}
-		</div>
+
+			{% if activation_expired %}
+			 	<div id="errors"> This link is expired. 
+			{% elif  already_active %}
+				<div id="message"> This account is already active. </div> 
+			{% else %}
+				<div id="message">  
+					The account have been successfully activated. 
+					<a href="/Uprofile/login"> Login Now </a>
+				</div>
+			{% endif %}
+		{%  endif  %}
 	</section>
 {% endblock %}

@@ -4,17 +4,17 @@ from django.core.mail import send_mail
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(required=True,label='Username',min_length=8,max_length=25)
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'maxlength':'25','minlength':'3'}),label='Password',required=True,min_length=3,max_length=25)
+    username = forms.CharField(required=True,min_length=8,max_length=25,widget=forms.TextInput(attrs={ 'minlength':'8','maxlength':'25' }))
+    password = forms.CharField(required=True,min_length=8,max_length=25,widget=forms.PasswordInput(attrs={'minlength':'8','maxlength':'25'}))
 
 
 class RegisterForm(forms.Form):
     fname = forms.CharField(max_length=15,label='First Name',widget=forms.TextInput(attrs = {'maxlength':'15'}))
-    lname = forms.CharField(max_length=15,label='Last Name',widget=forms.TextInput(attrs = {'maxlength':'15'}))
-    username = forms.CharField(max_length=25,min_length=8,label='Username',widget=forms.TextInput(attrs = {'maxlength':'25'}))
+    lname = forms.CharField(max_length=15,label='Last Name' ,widget=forms.TextInput(attrs = {'maxlength':'15'}))
+    username = forms.CharField(max_length=25,min_length=8,label='Username',widget=forms.TextInput(attrs = {'minlength':'8','maxlength':'25'}))
     email = forms.EmailField(label='Email')
-    password = forms.CharField(max_length=20,widget=forms.PasswordInput(attrs = {'maxlength':'20'}),label='Password')
-    cpassword = forms.CharField(max_length=20,widget=forms.PasswordInput(attrs = {'maxlength':'20'}),label= 'Confirm Password')
+    password  = forms.CharField(max_length=25,min_length=8,widget=forms.PasswordInput(attrs = {'minlength':'8','maxlength':'25'}),label='Password')
+    cpassword = forms.CharField(max_length=25,min_length=8,widget=forms.PasswordInput(attrs = {'minlength':'8','maxlength':'25'}),label= 'Confirm Password')
 
     def clean_email(self):
         data = self.cleaned_data
@@ -64,8 +64,8 @@ class PasswordResetForm(forms.Form):
 
 class ResetForm(forms.Form):
 
-    new_password = forms.CharField(min_length=8,max_length=50,label="New Password",widget = forms.PasswordInput(attrs={}))
-    confirm_password  = forms.CharField(min_length=8,max_length=50,label="Confirm Password",widget = forms.PasswordInput(attrs={}))
+    new_password = forms.CharField(min_length=8,max_length=50,label="New Password",widget = forms.PasswordInput(attrs = {'minlength':'8','maxlength':'25'}))
+    confirm_password  = forms.CharField(min_length=8,max_length=50,label="Confirm Password",widget = forms.PasswordInput(attrs={'minlength':'8','maxlength':'25'}))
 
     def clean(self):
         password1 = self.cleaned_data.get('new_password')
@@ -76,9 +76,9 @@ class ResetForm(forms.Form):
 
 
 class ChangePasswordForm(forms.Form):
-    old_password = forms.CharField(min_length=8,max_length=50,label="Old Password",widget = forms.PasswordInput(attrs={}))
-    new_password = forms.CharField(min_length=8,max_length=50,label="New Password",widget = forms.PasswordInput(attrs={}))
-    confirm_password  = forms.CharField(min_length=8,max_length=50,label="Confirm Password",widget = forms.PasswordInput(attrs={}))
+    old_password = forms.CharField(min_length=8,max_length=50,label="Old Password",widget = forms.PasswordInput(attrs={'minlength':'8','maxlength':'25'}))
+    new_password = forms.CharField(min_length=8,max_length=50,label="New Password",widget = forms.PasswordInput(attrs={'minlength':'8','maxlength':'25'}))
+    confirm_password  = forms.CharField(min_length=8,max_length=50,label="Confirm Password",widget = forms.PasswordInput(attrs={'minlength':'8','maxlength':'25'}))
 
     def clean(self):
         password1 = self.cleaned_data.get('new_password')
@@ -87,5 +87,5 @@ class ChangePasswordForm(forms.Form):
             raise ValidationError(_("New Passwords dont match."))
         return self.cleaned_data
 
-
-
+class UploadDisplayPicture(forms.Form):
+    image = forms.ImageField()

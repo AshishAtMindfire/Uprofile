@@ -2,20 +2,21 @@
 
 {% block content %}
 	
-	<section>
-		
-		<div id="form">
-		
-			{%  if errors   %} 
-				<div  id="errorblock" > {{ errors }}  </div>
-			{%  endif  %}
-			
-
-			<form method="post">
-				{% csrf_token %}
-				{{  form.as_p }}
-				<button type="Submit"> Reset </button>
-			</form>			
-		</div>
+	<section>		
+			{% if Invalid_url %}
+				<div id="message"> Invalid Url </div>
+			{% else %}			
+				{%  if errors   %} 
+					<div  id="errorblock" > {{ errors }}  </div>
+				{%  endif  %}
+				
+				<div id='form'>
+					<form method="post">
+						{% csrf_token %}
+						{{  form.as_p }}
+						<button type="Submit"> Reset </button>
+					</form>	
+				</div>	
+			{% endif %}	
 	</section>
 {% endblock %}
