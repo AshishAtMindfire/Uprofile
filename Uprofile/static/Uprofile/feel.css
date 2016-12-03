@@ -4,8 +4,42 @@
 	display:block;
 	background-color: lightgreen ;
 	border : 3px solid black;
-
 }
+
+
+
+#headerSiteName
+{
+	display:inline-block;
+	font-size:3em; 
+	margin-left:30px; 
+	color:blue;
+}
+
+
+
+#HeaderFirst > div > div > a {
+	width: 150px;
+	margin: 5px 15px 0px 0px;	
+	padding:5px 15px;
+	background-color: darkgreen;
+	font-size:2em ;
+	color:white;
+	text-decoration: none;
+	display: block;
+	border-radius:10px;
+	text-align: center;
+}
+
+#logout {
+
+/*	position: fixed;
+	top:11%;
+	right:4%;
+	background-color: black; */
+	visibility: hidden;
+}
+
 
 #message{
 	text-align: center;
@@ -17,27 +51,6 @@
 	border-radius:10px;
 }
 
-#headerSiteName
-
-{
-	display:inline-block;
-	font-size:3em; 
-	margin-left:30px; 
-	color:blue;
-
-}
-
-#HeaderFirst > div > a {
-	margin:10px 15px 10px 0px;	
-	padding:5px 15px;
-	background-color: darkgreen;
-	font-size:2em ;
-	color:white;
-	text-decoration: none;
-	display: inline-block;
-	float:right;
-	border-radius:10px;
-}
 
 #errorblock
 {	
@@ -134,6 +147,7 @@
 label
 {
 	font-size: 1.2em;
+	margin: 0px 25px;
 
 }
 

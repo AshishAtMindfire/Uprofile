@@ -7,12 +7,16 @@
 			<span id="headerSiteName" > Uprofile </span>
 		
 			{%   if username %}
-
-			<a href="/Uprofile/show/"> {{ username}} </a>
-
+			<div style = "display:inline-block;float:right;margin-top:10px;"  
+				onmouseover = "document.getElementById('logout').style.visibility = 'visible' "  
+				onmouseout = " document.getElementById('logout').style.visibility = 'hidden' ">
+				<a href="/Uprofile/show/" > {{ username}} </a>
+				<a href="/Uprofile/logout/"  id="logout"> Logout </a>
+			</div>
 			{% else %}
+			<div style = "display:inline-block;float:right;" >
 				<a href="/Uprofile/login"> Login </a>
-				<a href="/Uprofile/register"> Register </a>
+			</div>
 			{% endif %}
 
 		</div>

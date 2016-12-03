@@ -1,7 +1,7 @@
 {%  extends "Uprofile/base_site.html" %}
 {% comment  %}
 	The template for login page in the application. 
-{% endcomment%}  
+{% endcomment %}  
 
 {% block content %}
 	<section>
@@ -14,10 +14,8 @@
 		<div id="form">
 			<form action="/Uprofile/login/"   method="POST">
 				{% csrf_token %}
-				<center>
-					{{ form.as_p }}
-					<button type="Submit" onclick="">Login</button>
-				</center>			
+				{{ form.as_p }}
+				<button type="Submit" onclick="">Login</button>		
 			</form>
 			<hr>
 			<a  href="/Uprofile/register" target="_self"> Register Now </a>
