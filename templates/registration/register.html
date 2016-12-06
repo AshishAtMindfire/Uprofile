@@ -14,11 +14,6 @@
                     {{ errors }}
                 </div>
             {%  endif %}
-            {%  if form.errors %}
-                <div id="errorblock">
-                    {{ form.errors }}
-                </div>
-            {%  endif %}
 
             <div  id="form" >
                 <form action="{%url 'Uprofile:register' %}"  method='POST'  style="padding-left: 15px; ">

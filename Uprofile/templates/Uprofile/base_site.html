@@ -5,20 +5,22 @@
 	<header id="HeaderFirst">
 		<div>
 			<span id="headerSiteName" > Uprofile </span>
-		
 			{%   if username %}
 			<div style = "display:inline-block;float:right;margin-top:10px;"  
-				onmouseover = "document.getElementById('logout').style.visibility = 'visible' "  
-				onmouseout = " document.getElementById('logout').style.visibility = 'hidden' ">
-				<a href="/Uprofile/show/" > {{ username}} </a>
-				<a href="/Uprofile/logout/"  id="logout"> Logout </a>
+				onmouseover = "document.getElementById('options').style.visibility = 'visible' "  
+				onmouseout = " document.getElementById('options').style.visibility = 'hidden' ">
+				<a href="/Uprofile/show/" class="options-links"> {{ username }} </a>
+				<div id="options">
+					<a href="/Uprofile/edit/"  			 class="options-links" > Edit Profile</a>
+					<a href="/Uprofile/changepassword/"  class="options-links" > Change Password </a>
+					<a href="/Uprofile/logout/"  		 class="options-links" > Logout </a>
+				</div>
 			</div>
 			{% else %}
 			<div style = "display:inline-block;float:right;" >
-				<a href="/Uprofile/login"> Login </a>
+				<a href="/Uprofile/login"  class="options-links"> Login </a>
 			</div>
 			{% endif %}
-
 		</div>
 	</header>
 

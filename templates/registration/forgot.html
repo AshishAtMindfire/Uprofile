@@ -1,0 +1,25 @@
+{% extends "Uprofile/base_site.html"  %}
+
+{% 	block content	%}
+<section>
+		{% if request_accepted %}
+			<div id="message" > Your request have been accepted. Check your email and visit the link provided in it to reset password. </div>
+		{% else %}
+			{% if not_registered %}
+				<div id="errorblock">The given email address is not registered. </div>
+			{% elif form.errors  %}
+				<div id="errorblock">{{ form.errors }}</div>
+			{% endif %}
+			
+			<div  id="form">
+				<form action="/Uprofile/forgot/"   method='post' >
+					<p  style="font-size:1.5em; ">Enter the email address you are registered with</p>
+					{%  csrf_token %}
+					{{  form.as_p  }}
+					<button   type="Submit" >Submit</button>
+				</form>
+			</div>
+		{%  endif %}
+</section>
+
+{% endblock  %}

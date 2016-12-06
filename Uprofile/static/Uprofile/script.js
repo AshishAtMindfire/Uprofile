@@ -1,6 +1,7 @@
 //alert('static files attached!!')
 
-function add_dp()
+function upload_dp()
 {
-	document.getElementById('profile_image')
+	form = document.getElementById('uploadform');
+	form.style.display = "inline";
 }

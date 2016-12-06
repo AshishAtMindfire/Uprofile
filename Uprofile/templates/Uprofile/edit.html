@@ -1,0 +1,49 @@
+{% extends 'Uprofile/base_site.html'  %}
+
+{% block content %}
+    
+    <section>
+            {%  if errors %}
+                <div id="errorblock">
+                    {{ errors }}
+                </div>
+            {%  endif %}
+            
+        <div id="Profile">
+            <div id="image_block"  style=" ">
+                {% if image %}
+                    <img id="dp"   src="{{ image.url }}" alt="Profile image"  />  
+                {%  else %}
+                    <img id="dp"   src="https://lh3.googleusercontent.com/-v_tcL1JuD4E/AAAAAAAAAAI/AAAAAAAAAVI/8Lbaq9-Yj_M/photo.jpg" alt="Profile image"  />  
+                {%  endif %} 
+                
+                <form id="uploadform" action="{% url 'Uprofile:pic_upload' %}" method="post" enctype="multipart/form-data"   >
+                    {% csrf_token %}
+                    <input id="id_image" name="image" type="file" required /><br/>
+                    <button type="submit"> Change </button>
+                </form>
+            </div>
+            
+            <div id="details_block">
+            <h2><center> User Details </center></h2>
+                <table>
+                    {%  for label,value  in  details %}
+                    <tr>
+                        <th>{{ label }}</th> <td> {{ value }} </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <h2><center> Edit details </center></h2>
+                <form method='post' >
+                    <table>
+                    {%   csrf_token  %}
+                    {{ form.as_table }}
+                    </table>
+                    <button type="submit"> Submit </button>
+                </form>
+            </div>
+            
+        </div>
+    </section>
+{% endblock %}
+

@@ -3,11 +3,12 @@
 {% block content %}
 	
 	<section>
-		<p> Index page</p>
+		
 		{% for user in users %}
-		<div  id="RegisteredUser">
-			<img src="">
-		</div>
+			<div  id="RegisteredUser" width=300px  height=300px >
+				<img src="{{ user.image.url }}"  alt="{{ user.user.get_full_name }}">
+				<h3><center>{{ user.user.get_full_name }}</center></h3>
+			</div>
 		{%   endfor %}
 
 	</section>

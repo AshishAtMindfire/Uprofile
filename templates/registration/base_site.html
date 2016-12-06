@@ -1,0 +1,34 @@
+{% extends   "Uprofile/base.html"  %}
+		
+{%  block  header %}
+
+	<header id="HeaderFirst">
+		<div>
+			<span id="headerSiteName" > Uprofile </span>
+		
+			{%   if username %}
+			<div style = "display:inline-block;float:right;margin-top:10px;"  
+				onmouseover = "document.getElementById('logout').style.visibility = 'visible' "  
+				onmouseout = " document.getElementById('logout').style.visibility = 'hidden' ">
+				<a href="/Uprofile/show/" > {{ username}} </a>
+				<a href="/logout/"  id="logout"> Logout </a>
+			</div>
+			{% else %}
+			<div style = "display:inline-block;float:right;" >
+				<a href="/Uprofile/login"> Login </a>
+			</div>
+			{% endif %}
+
+		</div>
+	</header>
+
+{% endblock %}
+
+{% block footer %}
+	<footer  style="">
+		<div>
+			<i>All copyrights are reserved by Uprofile.</i><br/>
+			Creator : Ashish Garg
+		</div>
+	</footer>
+{% endblock %}

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+import os
 
 
 class LoginForm(forms.Form):
@@ -41,7 +42,7 @@ class RegisterForm(forms.Form):
     #Sending activation email ------>>>!! Warning : Domain name is hardcoded below !!<<<------
     #The email is written in a text file (it contains templatetags which are populated by the method below)
     def sendEmail(self,data):
-        link = "http:127.0.0.1:8000/Uprofile/activate/" + data ['activation_key']
+        link = "http://localhost:8000/Uprofile/activate/" + data ['activation_key']
         subject = "Uprofile : Activate your account"
         message = "Dear User, \n Use the below link to activate your account on Uprofile\n\n %s  \n\n Regards\n Uprofile team." % (link)
         #print unicode(message).encode('utf8')
@@ -54,7 +55,7 @@ class PasswordResetForm(forms.Form):
     mail = forms.EmailField(label="",widget=forms.EmailInput)
 
     def sendEmail(self,data):
-        link = "http:127.0.0.1:8000/Uprofile/forgot/" + data ['key']
+        link = "http://localhost:8000/Uprofile/forgot/" + data ['key']
         subject = "Uprofile : Password reset request "
         message = "Dear User, \n Use the below link to reset your account's password on Uprofile\n\n   %s   \n\n Regards\n Uprofile team." % (link)
         #print unicode(message).encode('utf8')
@@ -87,5 +88,25 @@ class ChangePasswordForm(forms.Form):
             raise ValidationError(_("New Passwords dont match."))
         return self.cleaned_data
 
+
 class UploadDisplayPicture(forms.Form):
     image = forms.ImageField()
+
+    #def clean_image(self):
+    #   image = self.cleaned_data.get('image')
+    #   return self.cleaned_data
+
+
+
+class EditForm(forms.Form):
+    """
+    This form is used for editing the profile details of the userthe most important part is defining the fields of the
+    """
+    gender = forms.CharField(label='Gender',max_length=10)
+    mobile_number = forms.IntegerField(label="Mobile Number",widget = forms.NumberInput(attrs={}))
+    education = forms.CharField(label="Education level")
+    addressline1 = forms.CharField(label='Address line 1')
+    addressline2 = forms.CharField(label='Address line 2')
+    addressline3 = forms.CharField(label='Address line 3')
+    pincode = forms.IntegerField(label="Pincode",widget = forms.NumberInput(attrs={}))
+    location = forms.CharField(label="Location",max_length=20)

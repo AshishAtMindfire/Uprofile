@@ -4,7 +4,24 @@
     
     <section>
         <div id="Profile">
-            <img >
+            <div id="image_block" >
+                {% if image %}
+                    <img id="dp"   src="{{ image.url }}" alt="Profile image"  />  
+                {%  else %}
+                    <img id="dp"   src="https://lh3.googleusercontent.com/-v_tcL1JuD4E/AAAAAAAAAAI/AAAAAAAAAVI/8Lbaq9-Yj_M/photo.jpg" alt="Profile image"  />  
+                {%  endif %}          
+            </div>
+            
+            <div id="details_block" >
+                <h2><center> User Details </center></h2>
+                <table>
+                    {%  for label,value  in  details %}
+                    <tr>
+                        <td>{{ label }}</td> <td> {{ value }} </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
             
         </div>
     </section>

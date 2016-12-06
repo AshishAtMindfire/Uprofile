@@ -14,5 +14,7 @@ urlpatterns = [
 		url(r'^show/$',views.show,name='show'),
 		url(r'^forgot/$',views.MyForgotView.as_view(),name="forgot"),
 		url(r'^forgot/(?P<key>.+)$',views.MyResetPasswordView.as_view(),name="reset"),
+		url(r'^add_pic/$',views.PictureUploadView.as_view(),name="pic_upload"),
+		url(r'^edit/$',views.EditView.as_view(),name="edit")
 
 ]

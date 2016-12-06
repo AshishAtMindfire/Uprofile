@@ -2,24 +2,27 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from django.contrib.auth.models import User
-from Uprofile.forms import LoginForm, RegisterForm, PasswordResetForm, ResetForm, ChangePasswordForm
+from Uprofile.forms import LoginForm, RegisterForm, PasswordResetForm, ResetForm, ChangePasswordForm, UploadDisplayPicture, EditForm
 from django.urls import reverse
 from django.utils import timezone
 import hashlib
-from .models import Profile, ForgotPass 
+from .models import Profile, ForgotPass, DisplayImage
 import datetime
 from django.views import View
 
-# Creating IndexView here
 
+
+# Creating IndexView here
 class MyIndexView(View):
 
     template_name = "Uprofile/index.html"
 
     def get(self,request):
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse('Uprofile:show'))
-        context = {'username':request.user.username}
+        users = DisplayImage.objects.all()
+
+        '''if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('Uprofile:show'))'''
+        context = {'users':users}
         return render(request, self.template_name,context)
 
 
@@ -65,7 +68,11 @@ class MyRegisterView(View):
 
             # Using Profile model to store the activation key and expiry time
             profile =  Profile(user = user, activation_key = details['activation_key'], key_expires = details['key_expires'])
+            profile.created_on = timezone.now()
             profile.save()
+
+            DpObject = DisplayImage(user = user)
+            DpObject.save()
             return render(request, self.template_name, {'name':details['fname'],'email':details['email']})
 
         context = { 'errors' : "Validation failed !!", 'form': register_details }
@@ -139,7 +146,6 @@ class MyActivationView(View):
                 else: #Activation successful
                     profile.user.is_active = True
                     profile.user.save()
-                    profile.delete()
 
             else:
                 already_active = True
@@ -246,16 +252,6 @@ def uprofile_login(request):
     return render(request,"Uprofile/login.html",context) 
         
 """
-
-
-def show(request):
-    if request.user.is_authenticated():
-        context = {'username':request.user.username}
-        return render(request,"Uprofile/show.html",context)
-    else:
-        return render(request,"Uprofile/not_allowed.html",{})
-
-
 
 # View for forgot password
 
@@ -455,15 +451,80 @@ class MyLogoutView(View):
         return render(request, self.template_name, context)
             
 
-"""
-def uprofile_logout(request):
-    
-    if request.user.is_authenticated():
-        name = request.user.get_full_name()
-        context = { 'name': name }
-        logout(request)
-        return render(request,'Uprofile/logout.html',context)
-    else:
-        return render(request,"Uprofile/logout.html",{})
+class PictureUploadView(View):
 
-"""
+    def post(self,request,*args,**kwargs):
+        form = UploadDisplayPicture(request.POST, request.FILES)
+        if form.is_valid():
+            imageModel = DisplayImage.objects.get(user=request.user)
+            print(dir())
+            imageModel.image = form.cleaned_data['image']
+            imageModel.save()
+            print(m.image.name)
+            print('image saved')
+            return HttpResponseRedirect('/Uprofile/show')
+
+
+def show(request):
+    if request.user.is_authenticated():
+        context = {'username':request.user.username}
+        profile = Profile.objects.get(user=request.user)
+        ImageModel = DisplayImage.objects.get(user=request.user)
+        context['image'] = ImageModel.image
+        details = list()
+        details.append(('Username',request.user.username))
+        details.append(('Email',request.user.email))
+        details.append(('Created On',profile.created_on))
+        details.append(('Gender',profile.gender))
+        details.append(('Mobile Number', profile.contact_mobile))
+        details.append(('Eduaction Level', profile.education_level))
+        details.append(('Address line 1', profile.addressline1))
+        details.append(('Address line 2', profile.addressline2))
+        details.append(('Address line 3', profile.addressline3))
+        details.append(('Location', profile.location))
+        details.append(('Pincode', profile.pincode))
+        context['details'] = details 
+        return render(request,"Uprofile/show.html",context)
+    else:
+        return render(request,"Uprofile/not_allowed.html",{})
+
+
+class EditView(View):
+
+    template_name = 'Uprofile/edit.html'
+    initial = {}
+    form_class = EditForm
+
+    def get(self,request,*args,**kwargs):
+        context = {'username':request.user.username}
+        profile = Profile.objects.get(user=request.user)
+        context['image'] = DisplayImage.objects.get(user=request.user).image
+        self.initial= { 'gender' : profile.gender , 'mobile_number' : profile.contact_mobile, \
+         'education' : profile.education_level, 'addressline1' : profile.addressline1, \
+         'addressline2' : profile.addressline2, 'addressline3' : profile.addressline3, \
+         'location' : profile.location, 'pincode' : profile.pincode  }
+        details = list()
+        details.append(('Username',request.user.username))
+        details.append(('Email',request.user.email))
+        details.append(('Created On',profile.created_on))
+        context['form'] = self.form_class(initial=self.initial)
+        context['details'] = details
+        return render(request,"Uprofile/edit.html",context)
+
+    def post(self,request,*args,**kwargs):
+        
+        form = EditForm(request.POST)
+        if form.is_valid():
+            profile = Profile.objects.get(user=request.user)
+            profile.gender = form.cleaned_data['gender']
+            profile.contact_mobile  = form.cleaned_data['mobile_number']
+            profile.education_level = form.cleaned_data['education']   
+            profile.addressline1 = form.cleaned_data['addressline1']
+            profile.addressline2 = form.cleaned_data['addressline2'] 
+            profile.addressline3 = form.cleaned_data['addressline3']
+            profile.location = form.cleaned_data['location']
+            profile.pincode = form.cleaned_data['pincode']
+            profile.save()
+            return HttpResponseRedirect(reverse('Uprofile:show'))
+        else:
+            return render(request,self.template_name,{'errors':form.errors})
